@@ -323,7 +323,9 @@
                       include 'koneksi.php';
                       $data = mysqli_query($db,"select * from visimisi");
                       $no = 1;
+                      $x = 0;
                       while($isi = mysqli_fetch_array($data)){
+                        $x++;
                       
                  ?>
                     <tr>
@@ -331,7 +333,7 @@
                       <td><?= $isi['judul']; ?></td>
                       <td><?php echo $isi['deskripsi']; ?></td>
                       <td>
-                        <button type="button" class="btn btn-primary btn-sm" data-target="#edit" data-toggle="modal">Edit</button> |
+                        <button type="button" class="btn btn-primary btn-sm" data-target="#edit-<?= $x ?>" data-toggle="modal">Edit</button> |
                         <button type="button" class="btn btn-danger btn-sm" onclick="return confirm('yakin?')" href="hapus.php?judul=<?php echo $isi['judul']; ?>">Hapus</button>  
                       </td>
                       <?php }?>
@@ -387,8 +389,14 @@
       </div>
     </div>
   </div>
-
-  <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<?php 
+include 'koneksi.php';
+$data = mysqli_query($db, "SELECT * FROM visimisi");
+  $x = 0;
+while ($isi = mysqli_fetch_array($data)){
+  $x++;
+                      ?>
+  <div class="modal fade" id="edit-<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -400,11 +408,6 @@
             <div class="modal-body">
                 <div class="col-md-6">
                   <form action="visimisi/visimisi.php" method="POST">
-                  <?php 
-                      include 'koneksi.php';
-                      $data = mysqli_query($db, "SELECT * FROM visimisi where judul='VISI' ");
-                      while ($isi = mysqli_fetch_array($data)){
-                      ?>
                   <table class="table table-borderless">
                     <tr>
                       <th>Judul</th>
@@ -423,13 +426,13 @@
                       </td>
                     </tr>
                   </table>
-              <?php } ?>
                   </form>
                 </div>
             </div>
         </div>
     </div>
   </div>
+  <?php } ?>
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
